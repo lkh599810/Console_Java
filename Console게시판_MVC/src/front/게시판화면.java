@@ -24,11 +24,11 @@ public class 게시판화면 {
 		
 		
 		
-		
+		  
 		System.out.println("=====================게시판=====================");
 		System.out.println("\t\t\t"+controller.MemberController.로그인상태);
 		System.out.println("=============================================");
-		System.out.println("1.글쓰기 2.상세보기");
+		System.out.println("1.글쓰기 2.상세보기 3.수정 4.삭제");
 
 		System.out.println("=====================LIST====================");
 		//컨트롤러에 리스트출력도 만들기  
@@ -52,6 +52,19 @@ public class 게시판화면 {
 			int choose=입력.nextInt();
 			
 			controller.BoardController.상세보기(choose);
+		
+		}else if(menuchoose==3) {
+			System.out.println("\n 게시물 번호를 입력하세요");
+			
+			int choose=입력.nextInt();
+			
+			controller.BoardController.수정(choose);
+			
+		}else if(menuchoose==4) {
+			System.out.println("몇 번 게시물을 삭제하시겠습니까?");
+			
+			int choose=입력.nextInt();
+			controller.BoardController.삭제(choose);
 		}
 		
 		

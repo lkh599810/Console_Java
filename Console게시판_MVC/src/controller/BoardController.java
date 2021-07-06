@@ -17,8 +17,10 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 	
 	public static int 상세보기번호=-1;
 	
+	public static int 조회수;
 	
-	public static void 글쓰기() {
+	
+	public static void 글쓰기() {//create
 	
 		Board board=new Board();
 	
@@ -35,16 +37,16 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 		
 		Date 작성일= new Date();	//게시물 작성일
 		
-		int count=0;
+		조회수=0;
 		
 		board.setTitle(제목);
-		board.setContent(제목);
+		board.setContent(내용);
 		board.setDate(작성일);
 		board.setWriterid(작성자);
-		board.setCount(count);
+		board.setCount(조회수);
 		
 		게시판리스트.add(board);
-
+		
 		
 	
 	}//글쓰기 끝
@@ -57,8 +59,8 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 			
 			상세보기번호=게시물번호-1; //원래 num
 			
-			System.out.println("제목: "+게시판리스트.get(i).getTitle()+"\t \t 작성자: "+게시판리스트.get(i).getWriterid()+"\t 번호: "+게시물번호);
-			System.out.println();
+			System.out.println("제목: "+게시판리스트.get(i).getTitle()+"\t \t 작성자: "+게시판리스트.get(i).getWriterid()+"\t 번호: "+게시물번호); 
+			System.out.println(); 
 			
 		}
 		
@@ -70,29 +72,105 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 	
 	
 	
-	public static void 상세보기(int choose) {
+	public static void 상세보기(int choose) { //read
 		
 		//choose랑 상세보기번호를 맞춰줘야 함. ===> how? ==> for문 써야할거같은데?
 
 		상세보기번호=choose-1;
-	
+		
+		조회수++;
+		
+		
+		System.out.println("=================================================");
+			
 		
 		System.out.println("=====================상세보기=====================");
 		
-		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle());
 		
-		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent());
+		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
 		
-		System.out.println("===============================================");
+		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 
+		
+		System.out.println("작성자: "+게시판리스트.get(상세보기번호).getWriterid());
+
+		System.out.println("조회수: "+조회수);
+
+		System.out.println("작성일: "+게시판리스트.get(상세보기번호).getNum());
+
+		
+		
+		
+		System.out.println("=================================================");
 		
 
-		//댓글 작성
 		
 		
 		
 		
 		
 		}
+	
+	
+	public static void 수정(int choose) { //update
+		
+		Board board=new Board();
+
+		상세보기번호=choose-1;
+			
+		System.out.println("=================================================");
+			
+		
+		System.out.println("=====================상세보기=====================");
+		
+		
+		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
+		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 	
+		System.out.println("작성자: "+게시판리스트.get(상세보기번호).getWriterid());
+		System.out.println("조회수: "+조회수);
+		System.out.println("작성일: "+게시판리스트.get(상세보기번호).getNum());
+	
+		
+		System.out.println("수정 제목:" );
+		String 수정제목=입력.next();
+		System.out.println("수정 내용: ");
+		String 수정내용=입력.next();
+		
+//		게시판리스트.get(상세보기번호).setTitle(수정제목);
+//		게시판리스트.get(상세보기번호).setContent(수정내용);
+		
+		board.setTitle(수정제목);
+		board.setContent(수정내용);
+		
+		게시판리스트.get(상세보기번호).setTitle(수정제목);
+		게시판리스트.get(상세보기번호).setContent(수정내용);
+		
+		
+		
+		System.out.println("=================================================");
+		
+		
+		}//수정 끝
+	
+	
+	public static void 삭제(int choose) {
+		
+		Board board=new Board();
+
+
+		상세보기번호=choose-1;
+		
+		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
+		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 
+		
+		System.out.println("****해당 게시물을 삭제합니다.*****");
+		
+		게시판리스트.remove(상세보기번호);
+		
+		
+	}
+	
+	
+	
 	
 	
 	
