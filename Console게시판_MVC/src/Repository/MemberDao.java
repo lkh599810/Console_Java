@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import domain.Member;
 
@@ -12,6 +13,7 @@ public class MemberDao {
 	Connection conn;
 	
 	private static MemberDao memberDao=new MemberDao();
+	
 	
 	public static MemberDao getMemberDao() {
 		return memberDao;
@@ -23,12 +25,12 @@ public class MemberDao {
 		try {
 			
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("연동11"); System.out.println("연동12");
+			
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/console?serverTimezone=UTC" , "root" , "1234");
-			System.out.println("연동12");
+			
 			
 		}catch (Exception e) {
-			System.out.println("연동12" + e );
+			
 			
 		}
 	
@@ -37,16 +39,18 @@ public class MemberDao {
 	
 	//회원가입
 	public int signup(Member member) {
-		System.out.println("연동");
-		String SQL="insert into member(name , id, pw)"+ "values(asdf,sdf,sdf)";
+		
+		String SQL="insert into member( name , id , pw )"+"values(?,?,?)";
 		
 		try {
-			System.out.println("연동");
+			
 			PreparedStatement pstmt=conn.prepareStatement(SQL);
-//			System.out.println("연동");
-//			pstmt.setString(2, member.getId());
-//			pstmt.setString(3, member.getPw());
-//			pstmt.setString(1, member.getName());
+			
+			
+			pstmt.setString(1, member.getName());
+			pstmt.setString(2, member.getId());
+			pstmt.setString(3, member.getPw());
+			
 			
 			pstmt.executeUpdate();
 			
@@ -61,9 +65,41 @@ public class MemberDao {
 	
 	
 	
+	//로그인 시 전체 회원검사할 리스트
+	public ArrayList<Member> allmember(){
+		
+		ArrayList<Member> members=new ArrayList<>();
+		
+		String SQL="select * from member";
+		
+		try {
+			
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			ResultSet rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				Member member=new Member();
+				
+				member.setName(rs.getString(1));
+				member.setId(rs.getString(2));
+				member.setPw(rs.getString(3));
+				
+				members.add(member);
+				
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return members;
+	}
+	
 	public int login(String id, String pw) {
 	
-		String SQL="select * from member where id=? and password=?";
+		String SQL="select * from member where id=? and pw=?";
 
 		try {
 			
@@ -73,12 +109,12 @@ public class MemberDao {
 			
 			ResultSet rs=pstmt.executeQuery();
 			
-			if(rs.next()) {
+			if( rs.next() ) {
 				return 1;
 			}else {
-				return 2;
+				return -1;
 			}
-			
+		
 			
 		} catch (Exception e) {
 			// TODO: handle exception

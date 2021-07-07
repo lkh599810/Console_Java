@@ -22,8 +22,6 @@ public class 게시판화면 {
 		Board board=new Board();
 		
 		
-		
-		
 		  
 		System.out.println("=====================게시판=====================");
 		System.out.println("\t\t\t"+controller.MemberController.로그인상태);

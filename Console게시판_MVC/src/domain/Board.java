@@ -8,7 +8,7 @@ public class Board {
 	private String title;
 	private String content;
 	private String writerid;
-	private Date date;
+	private String date;
 	private int count;
 	
 	public Board() {
@@ -16,7 +16,7 @@ public class Board {
 	
 	}
 	
-	public Board(String title, String content, String writerid, Date date) {
+	public Board(String title, String content, String writerid, String date) {
 
 		
 		this.title=title;
@@ -58,11 +58,11 @@ public class Board {
 		this.writerid = writerid;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

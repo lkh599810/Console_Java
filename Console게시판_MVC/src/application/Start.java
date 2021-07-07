@@ -5,6 +5,8 @@ import java.util.Scanner;
 import Repository.MemberDao;
 import domain.Member;
 import front.초기화면;
+import Repository.BoardDao;
+import domain.Board;
 
 public class Start {
 

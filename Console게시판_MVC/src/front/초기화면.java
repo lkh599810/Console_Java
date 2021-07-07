@@ -42,7 +42,7 @@ public class 초기화면 {
 			
 		
 			
-		}
+		} 
 		
 		else if(choose==1){
 			
