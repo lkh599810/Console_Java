@@ -41,7 +41,7 @@ public class BoardDao {
 	//게시판 접속 시 전체게시판 검사할 메소드
 	public ArrayList<Board> allboard(){
 		
-		ArrayList<Board> boards=new ArrayList<>();
+		ArrayList<Board> boardlist=new ArrayList<>();
 		
 		String SQL="select * from board";
 		
@@ -54,24 +54,89 @@ public class BoardDao {
 				
 				Board board=new Board();
 				
-				board.setTitle(rs.getString(1));
-				board.setContent(rs.getString(2));
-				board.setWriterid(rs.getString(3));
-				board.setDate(rs.getString(4));
-				board.setCount(rs.getInt(5));
+				board.setNum(rs.getInt(1)); //끌어올때는 모든컬럼 다 가져와야함.
+				board.setTitle(rs.getString(2));
+				board.setContent(rs.getString(3));
+				board.setWriterid(rs.getString(4));
+				board.setDate(rs.getString(5));
+				board.setCount(rs.getInt(6));
 			
 				
-				boards.add(board);
+				boardlist.add(board);
 				
 			}
 			
-			return boards;
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		
-			return boards;
+			return boardlist;
+	}
+	
+	
+	//상세보기
+	
+	public Board getboard(int num) {
+		
+		Board board=new Board();
+		
+		String SQL="select * from board where num=?";
+		
+		
+		try {
+			
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			
+			pstmt.setInt(1, num);
+			ResultSet rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				board.setNum(rs.getInt(1)); //끌어올때는 모든컬럼 다 가져와야함.
+				board.setTitle(rs.getString(2));
+				board.setContent(rs.getString(3));
+				board.setWriterid(rs.getString(4));
+				board.setDate(rs.getString(5));
+				board.setCount(rs.getInt(6));
+				
+				return board;
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		
+		
+		return board;
+		
+	}
+	
+	//조회수 증가
+	
+	public void countup(Board board) {
+		
+		
+		
+		String SQL="update board set count=? where num=?";
+		
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			
+			pstmt.setInt(1, board.getCount()+1);
+			pstmt.setInt(2, board.getNum());
+			
+			pstmt.executeUpdate();
+			
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 	}
 	
 	
@@ -112,15 +177,49 @@ public class BoardDao {
 	//수정
 	public int boardupdate(Board board) {
 		
+		String SQL="update board set title=? , content=? where num=?";
+		
+		try {
+			
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+			
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getContent());
+			pstmt.setInt(3, board.getNum());
+			
+			pstmt.executeUpdate();
+			
+			return 1;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		
 		
-		
-		return 1;
+		return -1;
 	}
 	
 	
 	public int boarddelete(Board board) {
-		return 1;
+		
+		String SQL="delete from board where num=?";
+		
+		
+		try {
+			
+			PreparedStatement pstmt=conn.prepareStatement(SQL);
+		
+			pstmt.setInt(1, board.getNum());
+			
+			pstmt.executeUpdate();
+			
+			return 1;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return -1;
 	}
 	
 }

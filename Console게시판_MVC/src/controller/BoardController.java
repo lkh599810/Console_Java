@@ -20,11 +20,11 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 	
 	ArrayList<Board> 게시판리스트= boardDao.allboard();
 	
-	public static int 게시물번호=-1;
+	private static int 게시물번호;
 	
-	public static int 상세보기번호=-1;
+	public static int 상세보기번호;
 	
-	public static int 조회수;
+	private static int 조회수;
 	
 	
 	public static void 글쓰기() {//create
@@ -71,22 +71,15 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 	
 	
 	public static void 리스트출력() {
+	
+		ArrayList<Board> 게시판리스트= BoardDao.getBoardDao().allboard();	
 		
 		
 		
-		
-		BoardDao boardDao=new BoardDao();
-		
-		ArrayList<Board> 게시판리스트= boardDao.allboard();		
-		
-//		ArrayList<Board> 게시판리스트= boardDao.getBoardDao().allboard();		
-
 		
 		for(int i=0; i<게시판리스트.size(); i++) {
 			
 			게시물번호=i+1;
-			
-			상세보기번호=게시물번호-1; //원래 num
 			
 			System.out.println("제목: "+게시판리스트.get(i).getTitle()+"\t \t 작성자: "+게시판리스트.get(i).getWriterid()+"\t 번호: "+게시물번호); 
 			System.out.println(); 
@@ -102,50 +95,147 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 	
 	
 	
-	public static void 상세보기(int choose) { //read
-		
-		//choose랑 상세보기번호를 맞춰줘야 함. ===> how? ==> for문 써야할거같은데?
-		BoardDao boardDao=new BoardDao();
-		
-		ArrayList<Board> 게시판리스트=boardDao.allboard();
+	public static void 상세보기(int choose) { //choose==리스트의 번호(프론트 게시물번호)
 		
 		
-		상세보기번호=choose-1;
 		
-		조회수++;
+		ArrayList<Board> 게시판리스트= BoardDao.getBoardDao().allboard();	
+
+
+		int boardnum=게시판리스트.get(choose-1).getNum(); // db 게시물 넘버
+		
+		상세보기번호=boardnum;
+			
+		BoardDao boardDao=BoardDao.getBoardDao();
+		
+		boardDao.countup(게시판리스트.get(choose-1)); //리스트에 있는 i번째 board 자체. ==게시판리스트.get(choose-1)
+		
+		//boardDao.countup(게시물넘버, 게시물에서 빼온 카운트+1) , dao에도 인수두개 주고 setint boardnum setint count+1로 해줫엇음. 이것도 맞는것.
+
+		
+		Board board= boardDao.getboard(boardnum); 
+		
 		
 		
 		System.out.println("=================================================");
-			
 		
+	
 		System.out.println("=====================상세보기=====================");
 		
-		
-		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
-		
-		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 
-		
-		System.out.println("작성자: "+게시판리스트.get(상세보기번호).getWriterid());
+	
 
-		System.out.println("조회수: "+조회수);
+	
+		System.out.println("제목:" +board.getTitle()); 
+	
+		System.out.println("내용: "+board.getContent()); 
+	
+		System.out.println("작성자: "+board.getWriterid());
+	
+		System.out.println("조회수: "+board.getCount());
 
-		System.out.println("작성일: "+게시판리스트.get(상세보기번호).getNum());
+		System.out.println("작성일: "+board.getDate());
 
 		
-		
+	
+		String 로그인아이디=controller.MemberController.게시판작성아이디;
 		
 		System.out.println("=================================================");
 		
+		System.out.print("1. 댓글 ");
+		
+		if(board.getWriterid().equals(로그인아이디)){
+				System.out.print("2.수정"); System.out.print("3.삭제"); 
+				System.out.println();
+			}
+		
+			int choose2=입력.nextInt();
+		
+			if(choose2==1) { //boardcontroller상세보기 => front댓글화면 =>commentcontroller=>commentdao
+				front.댓글화면.댓글화면출력(boardnum);
+			}
+			else if(choose2==2) {
+				
+				수정(boardnum);
+			
+			}else if(choose2==3) {
+				
+				삭제(boardnum);
+			}
+		
+		
+			System.out.println();
+			System.out.println("=================================================");
 
+	
 		
 		
 		
-		
+//		//choose랑 상세보기번호를 맞춰줘야 함. ===> how? ==> for문 써야할거같은데?
+//		BoardDao boardDao=new BoardDao();
+//		
+//		ArrayList<Board> 게시판리스트=boardDao.allboard();
+//		
+//		
+//		상세보기번호=choose-1;
+//		
+//		조회수++;
+//		String 로그인아이디=controller.MemberController.게시판작성아이디;
+//		
+//		
+//		System.out.println("=================================================");
+//			
+//		
+//		System.out.println("=====================상세보기=====================");
+//			
+//		
+//	
+//		
+//		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
+//		
+//		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 
+//		
+//		System.out.println("작성자: "+게시판리스트.get(상세보기번호).getWriterid());
+//
+//		System.out.println("조회수: "+조회수);
+//
+//		System.out.println("작성일: "+게시판리스트.get(상세보기번호).getDate());
+//
+//		
+//		
+//		
+//		System.out.println("=================================================");
+//		
+//	System.out.print("1. 댓글 ");
+//		
+//		if(게시판리스트.get(상세보기번호).getWriterid().equals(로그인아이디)){
+//				System.out.print("2.수정"); System.out.print("3.삭제"); 
+//				System.out.println();
+//			}
+//		
+//			int choose2=입력.nextInt();
+//		
+//			if(choose2==1) {
+//				//댓글dao.댓글목록
+//			}
+//			else if(choose2==2) {
+//				
+//				수정(choose2);
+//			
+//			}else if(choose2==3) {
+//				
+//				삭제(choose2);
+//			}
+//		
+//		
+//			System.out.println();
+//			System.out.println("=================================================");
+//
+//		
 		
 		}
 	
 	
-	public static void 수정(int choose) { //update
+	public static void 수정 (int 상세보기번호) { //update
 		
 	BoardDao boardDao=new BoardDao();
 		
@@ -153,35 +243,39 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 		
 		Board board=new Board();
 
-		상세보기번호=choose-1;
+		System.out.println(상세보기번호);
 			
-		System.out.println("=================================================");
-			
-		
-		System.out.println("=====================상세보기=====================");
-		
-		
-		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
-		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 	
-		System.out.println("작성자: "+게시판리스트.get(상세보기번호).getWriterid());
-		System.out.println("조회수: "+조회수);
-		System.out.println("작성일: "+게시판리스트.get(상세보기번호).getNum());
-	
+		System.out.println("========================수정페이지====================");
 		
 		System.out.println("수정 제목:" );
 		String 수정제목=입력.next();
 		System.out.println("수정 내용: ");
 		String 수정내용=입력.next();
+		System.out.println();
 		
-//		게시판리스트.get(상세보기번호).setTitle(수정제목);
-//		게시판리스트.get(상세보기번호).setContent(수정내용);
+		int 수정num=상세보기번호; //어레이리스트는 0부터, db num은 1부터. ???
 		
 		board.setTitle(수정제목);
 		board.setContent(수정내용);
+//		board.setNum(게시판리스트.get(상세보기번호).getNum());
+		board.setNum(수정num);
+
+
 		
-		게시판리스트.get(상세보기번호).setTitle(수정제목);
-		게시판리스트.get(상세보기번호).setContent(수정내용);
 		
+		int result=boardDao.boardupdate(board);
+		
+		if(result==1) {
+			System.out.println("성공");
+			System.out.println("=================================================");
+			System.out.println();
+			
+			리스트출력();
+		
+		}else {
+			System.out.println("실패");
+			
+		}
 		
 		
 		System.out.println("=================================================");
@@ -190,7 +284,7 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 		}//수정 끝
 	
 	
-	public static void 삭제(int choose) {
+	public static void 삭제(int 상세보기번호) {
 		
 	BoardDao boardDao=new BoardDao();
 		
@@ -199,17 +293,33 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 		Board board=new Board();
 
 
-		상세보기번호=choose-1;
+		System.out.println(상세보기번호);
 		
 		System.out.println("제목:" +게시판리스트.get(상세보기번호).getTitle()); 
 		System.out.println("내용: "+게시판리스트.get(상세보기번호).getContent()); 
 		
 		System.out.println("****해당 게시물을 삭제합니다.*****");
 		
-		게시판리스트.remove(상세보기번호);
+		board.setNum(상세보기번호);
+		
+//		int 삭제번호=게시판리스트.get(상세보기번호).getNum()-1;
+//		board.setNum(삭제번호);
+
+		int result=boardDao.boarddelete(board);
+		
+		if(result==1) {
+			System.out.println("성공");
+		}else {
+			
+			System.out.println("실패");
+		}
+		
+		
 		
 		
 	}
+	
+	
 	
 	
 	

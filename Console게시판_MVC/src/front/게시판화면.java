@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import controller.BoardController;
 import domain.Board;
 
 public class 게시판화면 {
@@ -26,7 +27,7 @@ public class 게시판화면 {
 		System.out.println("=====================게시판=====================");
 		System.out.println("\t\t\t"+controller.MemberController.로그인상태);
 		System.out.println("=============================================");
-		System.out.println("1.글쓰기 2.상세보기 3.수정 4.삭제");
+		System.out.println("1.글쓰기 2.상세보기 ");
 
 		System.out.println("=====================LIST====================");
 		//컨트롤러에 리스트출력도 만들기  
@@ -49,6 +50,8 @@ public class 게시판화면 {
 			
 			int choose=입력.nextInt();
 			
+			//choose=BoardController.상세보기번호;
+		
 			controller.BoardController.상세보기(choose);
 		
 		}else if(menuchoose==3) {
