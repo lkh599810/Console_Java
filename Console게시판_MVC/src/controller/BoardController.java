@@ -101,7 +101,7 @@ public class BoardController {// 리스트, 출력, 글쓰기, 삭제
 		
 		ArrayList<Board> 게시판리스트= BoardDao.getBoardDao().allboard();	
 
-
+		
 		int boardnum=게시판리스트.get(choose-1).getNum(); // db 게시물 넘버
 		
 		상세보기번호=boardnum;

@@ -70,6 +70,7 @@ public class CommentController {
 	
 	public static void ¥Ò±€ªË¡¶(int commentnum, int boardnum) {
 		
+		System.out.println(commentnum);
 		
 		Comment comment= new Comment();
 		
