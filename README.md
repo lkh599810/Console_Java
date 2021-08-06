@@ -10,10 +10,14 @@
 
 1. Java 기준 DAO 파일 : DB 접근명령문 + 서비스 메소드 || Springboot: Repository와 Service에서 분담.
 
-2. Java 기준 Entity만 생성 후 그것 하나만을 이용 || Springboot: Db에 담을 Entity, MVC사이사이 옮겨다닐 드랍쉽 역할의 dto로 분담. => 따라서 dto에서 entity로 만들어주는 toEntity() 필요
+2. Java 기준 Entity만 생성 후 그것 하나만을 이용 || Springboot: DB에 담을 Entity, MVC사이사이 옮겨다닐 드랍쉽 역할의 dto로 분담. => 따라서 dto에서 entity로 만들어주는 toEntity() 필요
 
 3. Thymeleaf의 사용 : 프론트와 백(Controller)을 이어주는 오작교. 
 
+
+#
+#
+#
 
 
 # 시작
